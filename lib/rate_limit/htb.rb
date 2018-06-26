@@ -53,7 +53,7 @@ module RateLimit
       #
       def initialize(rate, parent = nil)
         @lock = Monitor.new
-        @rate = rate
+        @rate = rate || 0
         @bucket_size = rate
         @parent = parent
         @tokens = rate
@@ -87,8 +87,8 @@ module RateLimit
         # Try to take amount tokens from this bucket or wait for the tokens to replenish
         # do this until we could get the amount of tokens we wanted
         until take amount
-          duration = amount.to_f / @rate
-          puts "sleeping for #{duration}"
+          duration = amount.to_f / rate # rate is a method
+          #puts "sleeping for #{duration}"
           sleep duration
         end
       end
